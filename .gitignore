@@ -1,5 +1,11 @@
+# Credentials
 .env
-*.csv
+
+# Downloads directory contents but keep the directory
+downloads/*
+!downloads/.gitkeep
+
+# Python files
 __pycache__/
 .DS_Store
 /.venv/
