@@ -8,16 +8,18 @@ from dotenv import load_dotenv
 
 class OuraDownloader:
     def __init__(self, email, password):
+        self.base_url = "https://cloud.ouraring.com"
         self.email = email
         self.password = password
-        self.download_dir = os.path.join(os.path.expanduser("~"), "Downloads")
-        self.base_url = "https://cloud.ouraring.com"
+        # Create downloads directory in project folder
+        self.download_dir = os.path.join(os.path.dirname(__file__), "downloads")
+        os.makedirs(self.download_dir, exist_ok=True)
 
     def setup_driver(self):
         """Setup Chrome driver with custom download preferences"""
         options = webdriver.ChromeOptions()
         prefs = {
-            "download.default_directory": self.download_dir,
+            "download.default_directory": os.path.abspath(self.download_dir),
             "download.prompt_for_download": False,
             "download.directory_upgrade": True,
             "safebrowsing.enabled": True
