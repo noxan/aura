@@ -1,5 +1,5 @@
 import polars as pl
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from pathlib import Path
 
 
@@ -22,25 +22,32 @@ def analyze_sleep_data():
     dates = df.get_column("date").to_list()
     scores = df.get_column("score").to_list()
 
-    # Create the plot
-    plt.figure(figsize=(12, 6))
-    plt.plot(dates, scores, marker="o", linestyle="-", linewidth=1, markersize=4)
+    # Create the plot using Plotly instead of Matplotlib
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=dates,
+            y=scores,
+            mode="lines+markers",
+            name="Sleep Score",
+            line=dict(width=1),
+            marker=dict(size=6),
+        )
+    )
 
     # Customize the plot
-    plt.title("Sleep Score Over Time")
-    plt.xlabel("Date")
-    plt.ylabel("Sleep Score")
-    plt.grid(True, linestyle="--", alpha=0.7)
+    fig.update_layout(
+        title="Sleep Score Over Time",
+        xaxis_title="Date",
+        yaxis_title="Sleep Score",
+        template="plotly_white",
+        height=600,
+        width=1000,
+    )
 
-    # Rotate x-axis labels for better readability
-    plt.xticks(rotation=45)
-
-    # Adjust layout to prevent label cutoff
-    plt.tight_layout()
-
-    # Save the plot
-    output_path = Path(__file__).parent / "sleep_analysis.png"
-    plt.savefig(output_path)
+    # Save the plot as HTML for interactivity
+    output_path = Path(__file__).parent / "sleep_analysis.html"
+    fig.write_html(output_path)
     print(f"Analysis saved to: {output_path}")
 
 
