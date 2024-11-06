@@ -41,8 +41,6 @@ def analyze_sleep_data():
         xaxis_title="Date",
         yaxis_title="Sleep Score",
         template="plotly_white",
-        height=600,
-        width=1000,
     )
 
     # Save the plot as HTML for interactivity
