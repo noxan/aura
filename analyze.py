@@ -1,4 +1,4 @@
-import pandas as pd
+import polars as pl
 import matplotlib.pyplot as plt
 from pathlib import Path
 
@@ -11,15 +11,19 @@ def analyze_sleep_data():
     
     latest_file = max(csv_files, key=lambda x: x.stat().st_mtime)
     
-    # Read the CSV file
-    df = pd.read_csv(latest_file, header=0)
-
-    # Convert date string to datetime
-    df['date'] = pd.to_datetime(df['day'])
+    # Read the CSV file using Polars instead of Pandas
+    df = pl.read_csv(latest_file)
+    
+    # Convert date string to datetime using Polars syntax
+    df = df.with_columns(pl.col('day').str.to_datetime().alias('date'))
+    
+    # Convert Polars DataFrame to lists for plotting
+    dates = df.get_column('date').to_list()
+    scores = df.get_column('score').to_list()
     
     # Create the plot
     plt.figure(figsize=(12, 6))
-    plt.plot(df['date'], df['score'], marker='o', linestyle='-', linewidth=1, markersize=4)
+    plt.plot(dates, scores, marker='o', linestyle='-', linewidth=1, markersize=4)
     
     # Customize the plot
     plt.title('Sleep Score Over Time')
