@@ -2,23 +2,23 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.webdriver import WebDriver
 import os
 from dotenv import load_dotenv
 
 
 class OuraDownloader:
-    def __init__(self, email, password):
-        self.base_url = "https://cloud.ouraring.com"
-        self.email = email
-        self.password = password
-        # Create downloads directory in project folder
-        self.download_dir = os.path.join(os.path.dirname(__file__), "downloads")
+    def __init__(self, email: str, password: str) -> None:
+        self.base_url: str = "https://cloud.ouraring.com"
+        self.email: str = email
+        self.password: str = password
+        self.download_dir: str = os.path.join(os.path.dirname(__file__), "downloads")
         os.makedirs(self.download_dir, exist_ok=True)
 
-    def setup_driver(self):
+    def setup_driver(self) -> WebDriver:
         """Setup Chrome driver with custom download preferences"""
         options = webdriver.ChromeOptions()
-        prefs = {
+        prefs: dict[str, str | bool] = {
             "download.default_directory": os.path.abspath(self.download_dir),
             "download.prompt_for_download": False,
             "download.directory_upgrade": True,
@@ -27,7 +27,7 @@ class OuraDownloader:
         options.add_experimental_option("prefs", prefs)
         return webdriver.Chrome(options=options)
 
-    def login(self, driver):
+    def login(self, driver: WebDriver) -> None:
         """Login to Oura Cloud"""
         driver.get(f"{self.base_url}/user/sign-in")
 
@@ -49,7 +49,7 @@ class OuraDownloader:
             EC.presence_of_element_located((By.XPATH, "//h2[contains(text(),'Today')]"))
         )
 
-    def run(self):
+    def run(self) -> None:
         driver = self.setup_driver()
         self.login(driver)
         driver.get(f"{self.base_url}/account/export/daily-sleep/csv")
