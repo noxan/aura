@@ -49,7 +49,7 @@ def analyze_sleep_data():
     )
 
     # Save the plot as HTML for interactivity
-    output_path = Path(__file__).parent / "sleep_analysis.html"
+    output_path = Path(__file__).parent / "sleep-analysis.html"
     fig.write_html(output_path)
     print(f"Analysis saved to: {output_path}")
 

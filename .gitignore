@@ -9,3 +9,6 @@ downloads/*
 __pycache__/
 .DS_Store
 /.venv/
+
+# Generated files
+sleep-analysis.html
