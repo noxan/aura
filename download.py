@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.webdriver import WebDriver
 import os
 from dotenv import load_dotenv
+import logging
 
 
 class OuraDownloader:
@@ -14,9 +15,13 @@ class OuraDownloader:
         self.password: str = password
         self.download_dir: str = os.path.join(os.path.dirname(__file__), "downloads")
         os.makedirs(self.download_dir, exist_ok=True)
+        logging.basicConfig(level=logging.INFO)
+        self.logger = logging.getLogger(__name__)
+        self.logger.info("OuraDownloader initialized")
 
     def setup_driver(self) -> WebDriver:
         """Setup Chrome driver with custom download preferences"""
+        self.logger.info("Setting up Chrome driver")
         options = webdriver.ChromeOptions()
         prefs: dict[str, str | bool] = {
             "download.default_directory": os.path.abspath(self.download_dir),
@@ -29,6 +34,7 @@ class OuraDownloader:
 
     def login(self, driver: WebDriver) -> None:
         """Login to Oura Cloud"""
+        self.logger.info("Logging in to Oura Cloud")
         driver.get(f"{self.base_url}/user/sign-in")
 
         # Wait for email input and enter credentials
@@ -48,11 +54,15 @@ class OuraDownloader:
         WebDriverWait(driver, 3).until(
             EC.presence_of_element_located((By.XPATH, "//h2[contains(text(),'Today')]"))
         )
+        self.logger.info("Login successful")
 
     def run(self) -> None:
+        self.logger.info("Running OuraDownloader")
         driver = self.setup_driver()
         self.login(driver)
+        self.logger.info("Navigating to export page")
         driver.get(f"{self.base_url}/account/export/daily-sleep/csv")
+        self.logger.info("Download complete")
 
 
 if __name__ == "__main__":
