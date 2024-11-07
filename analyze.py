@@ -28,10 +28,15 @@ def analyze_sleep_data():
         go.Scatter(
             x=dates,
             y=scores,
-            mode="lines+markers",
+            mode="markers",
             name="Sleep Score",
-            line=dict(width=1),
-            marker=dict(size=6),
+            marker=dict(
+                size=6,
+                color=scores,
+                colorscale="RdYlGn",
+                showscale=True,
+                colorbar=dict(title="Sleep Score"),
+            ),
         )
     )
 
