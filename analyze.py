@@ -31,8 +31,9 @@ def analyze_sleep_data():
             mode="markers",
             name="Sleep Score",
             marker=dict(
-                size=6,
+                size=10,
                 color=scores,
+                opacity=0.6,
                 colorscale="RdYlGn",
                 showscale=True,
                 colorbar=dict(title="Sleep Score"),
