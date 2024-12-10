@@ -69,6 +69,7 @@ if __name__ == "__main__":
     load_dotenv()
 
     downloader = OuraDownloader(
-        email=os.getenv("OURA_EMAIL"), password=os.getenv("OURA_PASSWORD")
+        email=os.getenv("OURA_EMAIL"),
+        password=os.getenv("OURA_PASSWORD"),
     )
     downloader.run()
