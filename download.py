@@ -4,8 +4,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.webdriver import WebDriver
 import os
-from dotenv import load_dotenv
+from environs import Env
 import logging
+
+env = Env()
+env.read_env()
 
 
 class OuraDownloader:
@@ -66,10 +69,8 @@ class OuraDownloader:
 
 
 if __name__ == "__main__":
-    load_dotenv()
-
     downloader = OuraDownloader(
-        email=os.getenv("OURA_EMAIL"),
-        password=os.getenv("OURA_PASSWORD"),
+        email=env.str("OURA_EMAIL"),
+        password=env.str("OURA_PASSWORD"),
     )
     downloader.run()
