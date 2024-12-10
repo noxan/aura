@@ -71,13 +71,16 @@ class OuraDownloader:
             )
         )
 
-        for link in csv_links:
+        total_files = len(csv_links)
+        self.logger.info(f"Found {total_files} CSV files to download")
+
+        for index, link in enumerate(csv_links, 1):
             href = link.get_attribute("href")
             if href:
-                self.logger.info(f"Downloading CSV from: {href}")
+                self.logger.info(f"Downloading file {index}/{total_files}: {href}")
                 driver.get(href)
                 # Add small delay to ensure download starts
-                driver.implicitly_wait(1)
+                driver.implicitly_wait(0.1)
 
     def run(self) -> None:
         self.logger.info("Running OuraDownloader")
