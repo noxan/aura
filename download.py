@@ -59,13 +59,35 @@ class OuraDownloader:
         )
         self.logger.info("Login successful")
 
+    def download_csv_files(self, driver: WebDriver) -> None:
+        """Download all CSV files from the profile page"""
+        self.logger.info("Downloading CSV files from profile page")
+        driver.get(f"{self.base_url}/profile/")
+
+        # Wait for CSV links to be present
+        csv_links = WebDriverWait(driver, 10).until(
+            EC.presence_of_all_elements_located(
+                (By.CSS_SELECTOR, "a[download][type='text/csv']")
+            )
+        )
+
+        for link in csv_links:
+            href = link.get_attribute("href")
+            if href:
+                self.logger.info(f"Downloading CSV from: {href}")
+                driver.get(href)
+                # Add small delay to ensure download starts
+                driver.implicitly_wait(1)
+
     def run(self) -> None:
         self.logger.info("Running OuraDownloader")
         driver = self.setup_driver()
-        self.login(driver)
-        self.logger.info("Navigating to export page")
-        driver.get(f"{self.base_url}/account/export/daily-sleep/csv")
-        self.logger.info("Download complete")
+        try:
+            self.login(driver)
+            self.download_csv_files(driver)
+            self.logger.info("All downloads complete")
+        finally:
+            driver.quit()
 
 
 if __name__ == "__main__":
