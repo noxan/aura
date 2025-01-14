@@ -10,7 +10,9 @@ def analyze_sleep_data():
     if not csv_files:
         raise FileNotFoundError("No CSV files found in downloads directory")
 
-    latest_file = max(csv_files, key=lambda x: x.stat().st_mtime)
+    csv_sleep_files = [file for file in csv_files if "daily-sleep" in file.name]
+
+    latest_file = max(csv_sleep_files, key=lambda x: x.stat().st_mtime)
 
     # Read the CSV file using Polars instead of Pandas
     df = pl.read_csv(latest_file)
