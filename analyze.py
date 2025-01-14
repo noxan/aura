@@ -38,7 +38,7 @@ def analyze_sleep_data():
                 opacity=0.8,
                 colorscale=[
                     [0.0, "#cc0000"],  # Deep red for lowest values
-                    [0.3, "#ff4400"],  # Red-orange
+                    [0.6, "#ff4400"],  # Red-orange
                     [0.7, "#ff8800"],  # Orange
                     [0.85, "#88cc00"],  # Yellow-green
                     [1.0, "#00cc00"],  # Deep green for highest values
